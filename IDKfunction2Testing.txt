@@ -1,0 +1,85 @@
+
+#  IDKfunction1Testing.txt
+# 
+#  File setting up the IDK function and testing it 
+#    
+#   August 16, 2022
+#
+#  Can identify K using 1 or more of the following methods:
+#   MADA, CORRINT, MOM, PCAF0, TLE
+
+
+cd /Users/schh5o/Documents/Term/OncoSplice/EstK
+#ls -l
+
+
+# ————————————————————————————————————————————————————————————————————————
+
+
+
+# INSTALLATION
+# Documentation lists following dependencies
+#   numba
+#   numpy
+#   scipy
+#   scikit-learn
+#   matplotlib
+#   pandas
+
+#  pip install numba
+#    might have already been installed, no issues noted
+#  pip install scikit-dimension
+#    no issues noted
+
+# *  view installed package commands
+
+
+# ————————————————————————————————————————————————————————————————————————
+
+
+# https://scikit-#. dimension.readthedocs.io/en/latest/quick_start.html
+
+
+python3
+
+#import sys,string,os
+#sys.path.append('/Users/schh5o/Library/Python/3.7/lib/python/#site-packages')
+
+#import skdim
+import numpy as np
+import pandas as pd
+
+# ----- READ IN TEST PSI FILE INTO PANDAS DF ------
+fn='kv1cMedianImputedPSIevcodes.txt'
+PSIdata = pd.read_csv(fn,sep='\t',index_col=0)
+PSIdata
+type(PSIdata)
+
+# -----  INDICATE WHICH METHODS TO RUN  ------------
+
+MADA=True
+CORRINT=True
+MOM=True
+PCAFO=True
+TLE=True
+FS=True
+
+
+# -------   CALL THE IDK FUNCTION   ---------------
+
+from IDKfunction2 import IDK
+
+IDKresults = IDK( PSIdf = PSIdata.transpose(), MADA=True, CORRINT=True, MOM=True, PCAFO=True, TLE=True, FS=True )
+type(IDKresults)
+print(IDKresults)
+
+Kest = round( pd.Series.median( IDKresults, skipna=True ) )
+Kest
+
+IDKresults = IDK( PSIdf = PSIdata.transpose(), CORRINT=True, TLE=True )
+IDKresults
+Kest = round( pd.Series.median( IDKresults, skipna=True ) )
+Kest
+
+
+exit()
