@@ -1,0 +1,14 @@
+SRA_Sample_ID	UID	UID
+150-MISTIQ-Cohort		
+Leucegene_Sample_ID	Unique	TRUE
+AltAnalyze_ID		
+Analyzed_Sets	Exclude	Test
+Tissue_Source		
+QC	Restrict	PASS
+Patient_Age	NumFilter	> 19
+Patient_Age	NumFilter	<70
+Patient_Sex	Restrict	"M, F"
+RUNX1_fusions	Covariate	"KNOWN,NOVEL"
+PML-RARA_fusions	Covariate	"PRESENT,0"
+PML-RARA_fusions	Covariate	"PRESENT,UNK"
+EVI1_fusions		
