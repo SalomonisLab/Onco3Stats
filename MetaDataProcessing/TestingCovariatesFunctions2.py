@@ -159,4 +159,48 @@ def ApplyTestCovToMeta2(tc=None,mt=None):
     fmeta.drop(columns=['Remov'],inplace=True)
     
     return fmeta
+
+#
+# ---------------------------------------------------------------------
+#
+#
+def makeTestGroups2(Cov_df,meta_df):
+#
+#  Function creates groups for each test specified in Cov_df, using meta_df
+#   Cov_df is pandas dataframe of "Covariate" rows that specifies 2 groups based on a metadata variable
+#   meta_df is a pandas dataframe (possibly filtered according to other meta variables) 
+#     used to ID samples with particular values of covariates.
+#     sample identifiers must be the (row) index of meta_df
+#
+#   function returns a dictionary of dictionaries of the form
+#     { comparisonA_name: { 'g1': samples_in_group_1,'g2': samples_in_group_2 },
+#       comparisonB_name: { 'g1': samples_in_group_1,'g2': samples_in_group_2 }}
+#
+    import pandas as pd
+    import numpy as np
+    
+    tc_dict = { }
+    
+    for k in Cov_df.index:
+        kVar = Cov_df['mVar'][k]
+        kVals = Cov_df['mVals'][k]
+
+        kVals = list( kVals.split(',') ) 
+        kVals = list(map(str.strip, kVals))
+
+        if len( kVals ) != 2:
+            print('Covariate statement must have 2 comma-separated values in 3rd column to define groups.')
+            return tc_dict
+        
+        g1_name = kVals[0]
+        g2_name = kVals[1]
+        comp_name = kVar + '__' + g1_name + '_vs_' + g2_name
+    
+        g1a = list( meta_df.index[meta_df[kVar]==kVals[0]] )
+        g2a = list( meta_df.index[meta_df[kVar]==kVals[1]] )
+    
+        tc_dict[comp_name] = { 'g1':g1a, 'g2':g2a } 
+
+    return tc_dict
+
     
